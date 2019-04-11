@@ -18,29 +18,13 @@ int main() {
     // Declarando variables
     LinkedList ll;
     std::vector<int> vsearch;
-    /*BinarySearchTree bst;*/
+    BinarySearchTree bst;
 
     // Grabar Datos del archivo "Locations.csv" en ll
-    std::ifstream LFILE(LOCATION_FILE);
-    if (LFILE.is_open()) {
-        std::string vread[7];
-        std::string line;
-        while (!LFILE.eof()) {
-            std::getline(LFILE, line);
-            std::istringstream iss(line);
-            unsigned int count = 0;
-            while (std::getline(iss, line, ',')) {
-                vread[count] = line;
-                count++;
-            }
-            Location *nodeValue=new Location(std::stoi(vread[0]), vread[1], vread[2], std::stod(vread[3]), std::stod(vread[4]),
-                    vread[5], vread[6]);
-            ll.add_tail(*nodeValue);
-        }
-    } LFILE.close();
+    load_locations(&ll,LOCATION_FILE);
 
-    std::cout<<ll.get_head()->GetPosition()<<'\n';
     // Grabar Datos del archivo "Locations.csv" en bst
+    load_locations(&bst,LOCATION_FILE);
 
     // Leer los datos del archivo "Search.txt" y grabarlos en vsearch
     std::ifstream SFILE(SEARCH_FILE);
@@ -52,24 +36,40 @@ int main() {
         }
     } SFILE.close();
 
-    /*double avgtime_ll = 0;
-    double avgtime_bst = 0;*/
+    double avgtime_ll = 0;
+    double avgtime_bst = 0;
+
 
     // Utilizar cada item de vsearch para buscar los lugares en ll y bsd
-    // Calcular los tiempos promedios en cada caso
-
-
-
-    for (const auto& id: vsearch) {
+    double t0=clock();
+    for (auto id: vsearch) {
         Node_List* search=ll.search(id);
-        //std::cout << search->data->GetpostionId() << ',';
-        /*std::cout << search->data->GetStateCode() << ',';
+    }
+    double t1=clock();
+
+    double t2=clock();
+    for (auto id: vsearch) {
+        Node* search=bst.search(id);
+    }
+    double t3=clock();
+
+
+    // Calcular los tiempos promedios en cada caso
+    avgtime_ll=((t1-t0)/CLOCKS_PER_SEC);
+    avgtime_bst=((t3-t2)/CLOCKS_PER_SEC);
+
+    std::cout<<avgtime_ll<<'\n'<<avgtime_bst;
+
+    /*for (auto id: vsearch) {
+        Node* search=bst.search(id);
+        std::cout << search->data->GetpostionId() << ',';
+        std::cout << search->data->GetStateCode() << ',';
         std::cout << search->data->GetCountry() << ',';
         std::cout << search->data->GetLatitude() << ',';
         std::cout << search->data->GetLongitude() << ',';
         std::cout << search->data->GetLine() << ',';
-        std::cout << search->data->GetConstruction() << ',' << '\n';*/
-    }
+        std::cout << search->data->GetConstruction() << '\n';
+    }*/
 
 
     return 0;

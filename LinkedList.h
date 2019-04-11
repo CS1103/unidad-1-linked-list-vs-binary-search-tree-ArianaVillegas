@@ -11,7 +11,7 @@ namespace UTEC {
     struct Node_List {
         Location *data;
         Node_List *next;
-        Node_List(Location n_data);
+        Node_List(Location *n_data);
         ~Node_List();
         int GetPosition(){ return data->GetpostionId();};
     };
@@ -26,12 +26,13 @@ namespace UTEC {
         bool is_empty();
         Node_List* get_head();
         Node_List* get_tail();
-        void add_head(Location& data);
-        void add_tail(Location& data);
+        void add_head(Location* data);
+        void add_tail(Location* data);
         void print();
-        void insert(int position, const Location& data);
+        void insert(int position, Location* data);
         Node_List* search(int position_id);
     };
+    void load_locations(LinkedList* linked_list, std::string file_name);
 }
 
 #endif //LINKEDLISTVSBINARYTREE_LINKEDLIST_H

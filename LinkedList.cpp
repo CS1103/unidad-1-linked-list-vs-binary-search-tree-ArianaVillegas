@@ -4,16 +4,18 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <sstream>
 #include "LinkedList.h"
 #include "Location.h"
 
-UTEC::Node_List::Node_List(Location n_data) {
-    data = &n_data;
+UTEC::Node_List::Node_List(Location *n_data) {
+    data = n_data;
     next = nullptr;
 }
 
 UTEC::Node_List::~Node_List() {
-
+    delete next;
+    delete data;
 }
 
 UTEC::LinkedList::LinkedList() {
@@ -22,7 +24,6 @@ UTEC::LinkedList::LinkedList() {
 }
 
 UTEC::LinkedList::~LinkedList() {
-
 }
 
 int UTEC::LinkedList::size() {
@@ -51,7 +52,7 @@ UTEC::Node_List *UTEC::LinkedList::get_tail() {
     return tail;
 }
 
-void UTEC::LinkedList::add_head(Location& data) {
+void UTEC::LinkedList::add_head(Location* data) {
     Node_List* temp = new Node_List(data);
     if (is_empty()) {
         tail = temp;
@@ -62,7 +63,7 @@ void UTEC::LinkedList::add_head(Location& data) {
     }
 }
 
-void UTEC::LinkedList::add_tail(Location& data) {
+void UTEC::LinkedList::add_tail(Location* data) {
     Node_List* temp = new Node_List(data);
     if (is_empty()) {
         tail = temp;
@@ -75,12 +76,19 @@ void UTEC::LinkedList::add_tail(Location& data) {
 
 void UTEC::LinkedList::print(){
     Node_List* actual = head;
+    std::cout << "PositionId,statecode,county,point_latitude,point_longitude,line,construction\n";
     while(actual != nullptr) {
-        std::cout<<actual->next<<"\n";
+        std::cout << actual->data->GetpostionId() << ',';
+        std::cout << actual->data->GetStateCode() << ',';
+        std::cout << actual->data->GetCountry() << ',';
+        std::cout << actual->data->GetLatitude() << ',';
+        std::cout << actual->data->GetLongitude() << ',';
+        std::cout << actual->data->GetLine() << ',';
+        std::cout << actual->data->GetConstruction() << '\n';
         actual = actual->next;
     }
 }
-void UTEC::LinkedList::insert(int position, const Location& data){
+void UTEC::LinkedList::insert(int position, Location* data){
     Node_List* temp = new Node_List(data);
     Node_List* actual = head;
     if (is_empty()) {
@@ -96,11 +104,31 @@ void UTEC::LinkedList::insert(int position, const Location& data){
 }
 
 UTEC::Node_List * UTEC::LinkedList::search(int position_id) {
-    //Node_List* actual = head;
-    //while(actual != nullptr) {
-        /*if(position_id==actual->GetPosition()){
+    Node_List* actual = head;
+    while(actual != nullptr) {
+        if(position_id==actual->GetPosition()){
             return actual;
-        }*/
-      //  actual=actual->next;
-    //}
+        }
+        actual=actual->next;
+    }
+}
+
+void UTEC::load_locations(UTEC::LinkedList *linked_list, std::string file_name) {
+    std::ifstream LFILE(file_name);
+    if (LFILE.is_open()) {
+        std::string vread[7];
+        std::string line;
+        while (!LFILE.eof()) {
+            std::getline(LFILE, line);
+            std::istringstream iss(line);
+            unsigned int count = 0;
+            while (std::getline(iss, line, ',')) {
+                vread[count] = line;
+                count++;
+            }
+            Location *nodeValue=new Location(std::stoi(vread[0]), vread[1], vread[2], std::stod(vread[3]), std::stod(vread[4]),
+                                             vread[5], vread[6]);
+            linked_list->add_tail(nodeValue);
+        }
+    } LFILE.close();
 }
