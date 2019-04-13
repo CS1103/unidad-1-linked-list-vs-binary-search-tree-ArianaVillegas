@@ -12,8 +12,16 @@ UTEC::Node::Node(Location *n_data) {
     left = nullptr;
 }
 
+UTEC::Node::~Node() {
+    delete data;
+}
+
 UTEC::BinarySearchTree::BinarySearchTree() {
     root = nullptr;
+}
+
+UTEC::BinarySearchTree::~BinarySearchTree() {
+    clear(root);
 }
 
 void UTEC::BinarySearchTree::insert(Location* data) {
@@ -43,8 +51,12 @@ void UTEC::BinarySearchTree::insert(Location* data) {
     }
 }
 
-void UTEC::BinarySearchTree::clear() {
-
+void UTEC::BinarySearchTree::clear(Node *actual) {
+    if(actual->left!= nullptr)
+        clear(actual->left);
+    if(actual->right!= nullptr)
+        clear(actual->right);
+    delete actual;
 }
 
 bool UTEC::BinarySearchTree::is_empty() {
@@ -73,8 +85,12 @@ UTEC::Node * UTEC::BinarySearchTree::search(int position_id) {
     }
 }
 
-void UTEC::BinarySearchTree::print() {
-
+void UTEC::BinarySearchTree::print(Node *name) {
+    std::cout<<name->data->GetpostionId()<<'\n';
+    if(name->left!= nullptr)
+        print(name->left);
+    if(name->right!= nullptr)
+        print(name->right);
 }
 
 void UTEC::load_locations(UTEC::BinarySearchTree *binary_search_tree, std::string file_name) {

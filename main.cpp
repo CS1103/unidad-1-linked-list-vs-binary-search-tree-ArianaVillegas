@@ -60,17 +60,6 @@ int main() {
 
     std::cout<<avgtime_ll<<'\n'<<avgtime_bst;
 
-    /*for (auto id: vsearch) {
-        Node* search=bst.search(id);
-        std::cout << search->data->GetpostionId() << ',';
-        std::cout << search->data->GetStateCode() << ',';
-        std::cout << search->data->GetCountry() << ',';
-        std::cout << search->data->GetLatitude() << ',';
-        std::cout << search->data->GetLongitude() << ',';
-        std::cout << search->data->GetLine() << ',';
-        std::cout << search->data->GetConstruction() << '\n';
-    }*/
-
 
     return 0;
 }

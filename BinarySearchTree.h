@@ -13,7 +13,7 @@ namespace UTEC {
         Node* right;
         Node* left;
         Node(Location *n_data);
-        ~Node(){};
+        ~Node();
 
     };
 
@@ -21,13 +21,13 @@ namespace UTEC {
         Node* root;
     public:
         BinarySearchTree();
-        ~BinarySearchTree(){};
+        ~BinarySearchTree();
         void insert(Location* data);
-        void clear();
+        void clear(Node *name);
         bool is_empty();
         Node* get_root();
         Node* search(int position_id);
-        void print();
+        void print(Node *name);
     };
 
     void load_locations(BinarySearchTree* binary_search_tree, std::string file_name);

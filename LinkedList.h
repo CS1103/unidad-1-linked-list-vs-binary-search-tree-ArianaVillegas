@@ -13,7 +13,6 @@ namespace UTEC {
         Node_List *next;
         Node_List(Location *n_data);
         ~Node_List();
-        int GetPosition(){ return data->GetpostionId();};
     };
 
     class LinkedList {

@@ -14,7 +14,6 @@ UTEC::Node_List::Node_List(Location *n_data) {
 }
 
 UTEC::Node_List::~Node_List() {
-    delete next;
     delete data;
 }
 
@@ -24,6 +23,10 @@ UTEC::LinkedList::LinkedList() {
 }
 
 UTEC::LinkedList::~LinkedList() {
+    while (head!= nullptr){
+        delete head;
+        head=head->next;
+    }
 }
 
 int UTEC::LinkedList::size() {
@@ -78,6 +81,7 @@ void UTEC::LinkedList::print(){
     Node_List* actual = head;
     std::cout << "PositionId,statecode,county,point_latitude,point_longitude,line,construction\n";
     while(actual != nullptr) {
+        std::cout << actual << '\n';
         std::cout << actual->data->GetpostionId() << ',';
         std::cout << actual->data->GetStateCode() << ',';
         std::cout << actual->data->GetCountry() << ',';
@@ -106,7 +110,7 @@ void UTEC::LinkedList::insert(int position, Location* data){
 UTEC::Node_List * UTEC::LinkedList::search(int position_id) {
     Node_List* actual = head;
     while(actual != nullptr) {
-        if(position_id==actual->GetPosition()){
+        if(position_id==actual->data->GetpostionId()){
             return actual;
         }
         actual=actual->next;
