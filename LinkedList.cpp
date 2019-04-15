@@ -6,7 +6,6 @@
 #include <vector>
 #include <sstream>
 #include "LinkedList.h"
-#include "Location.h"
 
 UTEC::Node_List::Node_List(Location *n_data) {
     data = n_data;
@@ -25,6 +24,7 @@ UTEC::LinkedList::LinkedList() {
 UTEC::LinkedList::~LinkedList() {
     while (head!= nullptr){
         delete head;
+        head= nullptr;
         head=head->next;
     }
 }
@@ -99,11 +99,17 @@ void UTEC::LinkedList::insert(int position, Location* data){
         tail = temp;
         head = temp;
     } else {
-        for(int i=0; i<position-1; i++){
-            actual = actual->next;
+        if (position==0){
+            add_head(data);
+        } else if(position==3) {
+            add_tail(data);
+        }else{
+            for (int i = 0; i < position-1; i++) {
+                actual = actual->next;
+            }
+            temp->next = actual->next;
+            actual->next = temp;
         }
-        temp->next=((actual->next)->next)->next;
-        actual->next=temp;
     }
 }
 
